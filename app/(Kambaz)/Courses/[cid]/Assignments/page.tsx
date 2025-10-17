@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import {
   Button,
@@ -13,8 +14,14 @@ import { BsGripVertical } from "react-icons/bs";
 import { FaMagnifyingGlass, FaPlus } from "react-icons/fa6";
 import LessonControlButtons from "../Modules/LessonControlButtons";
 import { LuNotebookPen } from "react-icons/lu";
+import { useParams } from "next/navigation";
+import * as db from "../../../Database";
 
 export default function Assignments() {
+  const { cid } = useParams();
+  const assignments = db.assignments;
+
+  const courseAssignments = assignments.filter((a) => a.course === cid);
   return (
     <div id="wd-assignments">
       <div className="flex mb-3">
@@ -62,66 +69,31 @@ export default function Assignments() {
             <LessonControlButtons />
           </div>
           <ListGroup className="wd-assignment-list rounded-0">
-            <ListGroupItem className="wd-assignment-list-item p-3 d-flex align-items-center">
-              <div className="d-flex align-items-center me-3">
-                <BsGripVertical className="me-2 fs-3" />
-                <LuNotebookPen className="text-success" />
-              </div>
+            {courseAssignments.map((assignment) => (
+              <ListGroupItem
+                key={assignment._id}
+                className="wd-assignment-list-item p-3 d-flex align-items-center"
+              >
+                <div className="d-flex align-items-center me-3">
+                  <BsGripVertical className="me-2 fs-3" />
+                  <LuNotebookPen className="text-success" />
+                </div>
 
-              <div className="flex-grow-1 d-flex flex-column">
-                <Link
-                  href="/Courses/1234/Assignments/123"
-                  className="wd-assignment-link text-black fw-bold"
-                >
-                  A1 - ENV + HTML
-                </Link>
-                <span className="text-muted small">
-                  Multiple Modules | Not available until May 6 at 12:00am | Due
-                  May 13 at 11:59pm | 100 pts
-                </span>
-              </div>
-              <LessonControlButtons />
-            </ListGroupItem>
-            <ListGroupItem className="wd-assignment-list-item p-3 d-flex align-items-center">
-              <div className="d-flex align-items-center me-3">
-                <BsGripVertical className="me-2 fs-3" />
-                <LuNotebookPen className="text-success" />
-              </div>
+                <div className="flex-grow-1 d-flex flex-column">
+                  <Link
+                    href={`/Courses/${cid}/Assignments/${assignment._id}`}
+                    className="wd-assignment-link text-black fw-bold"
+                  >
+                    {assignment.title}
+                  </Link>
+                  <span className="text-muted small">
+                    Multiple Modules | Due soon | 100 pts
+                  </span>
+                </div>
 
-              <div className="flex-grow-1 d-flex flex-column">
-                <Link
-                  href="/Courses/1234/Assignments/123"
-                  className="wd-assignment-link text-black fw-bold"
-                >
-                  A2 - CSS + BOOTSTRAP
-                </Link>
-                <span className="text-muted small">
-                  Multiple Modules | Not available until May 13 at 12:00am | Due
-                  May 20 at 11:59pm | 100 pts
-                </span>
-              </div>
-              <LessonControlButtons />
-            </ListGroupItem>
-            <ListGroupItem className="wd-assignment-list-item p-3 d-flex align-items-center">
-              <div className="d-flex align-items-center me-3">
-                <BsGripVertical className="me-2 fs-3" />
-                <LuNotebookPen className="text-success" />
-              </div>
-
-              <div className="flex-grow-1 d-flex flex-column">
-                <Link
-                  href="/Courses/1234/Assignments/123"
-                  className="wd-assignment-link text-black fw-bold"
-                >
-                  A3 - JAVASCRIPT + REACT
-                </Link>
-                <span className="text-muted small">
-                  Multiple Modules | Not available until May 20 at 12:00am | Due
-                  May 27 at 11:59pm | 100 pts
-                </span>
-              </div>
-              <LessonControlButtons />
-            </ListGroupItem>
+                <LessonControlButtons />
+              </ListGroupItem>
+            ))}
           </ListGroup>
         </ListGroupItem>
       </ListGroup>

@@ -1,3 +1,6 @@
+"use client";
+import { assignments } from "@/app/(Kambaz)/Database";
+import { useParams } from "next/navigation";
 import {
   FormLabel,
   FormControl,
@@ -9,16 +12,28 @@ import {
 } from "react-bootstrap";
 
 export default function AssignmentEditor() {
+  const { cid, aid } = useParams();
+
+  const assignment = assignments.find((a) => a._id === aid && a.course === cid);
+
+  if (!assignment) {
+    return <div className="p-3 text-danger">Assignment not found.</div>;
+  }
   return (
     <div id="wd-assignments-editor">
       <FormLabel>Assignment Name</FormLabel>
-      <FormControl id="wd-name" type="name" placeholder="A1 - ENV + HTML" />
+      <FormControl
+        id="wd-name"
+        type="name"
+        placeholder="Assignment title"
+        defaultValue={assignment.title}
+      />
       <br />
       <FormControl
         id="wd-description"
         as="textarea"
         rows={3}
-        defaultValue="The assignment is available online Submit a link to the landing page of"
+        defaultValue={assignment.description}
       />
       <br />
       <Form>
@@ -27,7 +42,11 @@ export default function AssignmentEditor() {
             Points
           </FormLabel>
           <Col sm={10}>
-            <FormControl type="number" placeholder="100" />
+            <FormControl
+              type="number"
+              placeholder="100"
+              defaultValue={assignment.points}
+            />
           </Col>
         </Row>
         <Row className="mb-3 align-items-center">
@@ -100,24 +119,24 @@ export default function AssignmentEditor() {
           </FormLabel>
           <Col sm={10}>
             <FormLabel>Assign to</FormLabel>
-            <FormControl defaultValue="Everyone" className="mb-2" />
+            <FormControl className="mb-2" />
 
             <FormLabel>Due</FormLabel>
             <FormControl
               type="date"
-              defaultValue="2024-05-13"
+              defaultValue={assignment.dueDate}
               className="mb-2"
             />
 
             <FormLabel>Available from</FormLabel>
             <FormControl
               type="date"
-              defaultValue="2024-05-13"
+              defaultValue={assignment.availableDate}
               className="mb-2"
             />
 
             <FormLabel>Until</FormLabel>
-            <FormControl type="date" defaultValue="2024-05-20" />
+            <FormControl type="date" />
           </Col>
         </Row>
       </Form>
