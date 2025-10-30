@@ -1,11 +1,8 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-export default function CourseNavigation({
-  params,
-}: {
-  params: { cid: string };
-}) {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export default function CourseNavigation({ params }: { params: { cid: any } }) {
   const pathname = usePathname();
   const { cid } = params;
 
