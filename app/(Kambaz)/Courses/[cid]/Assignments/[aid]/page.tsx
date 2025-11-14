@@ -10,8 +10,12 @@ import {
   Row,
   Button,
 } from "react-bootstrap";
-import { addAssignment, updateAssignment } from "../reducer";
+import {
+  addAssignment as addAssignmentAction,
+  updateAssignment as updateAssignmentAction,
+} from "../reducer";
 import { v4 as uuidv4 } from "uuid";
+import * as client from "../../../client";
 
 export default function AssignmentEditor() {
   const { cid, aid } = useParams();
@@ -41,13 +45,26 @@ export default function AssignmentEditor() {
     if (existing) setAssignment(existing);
   }, [existing]);
 
-  const handleSave = () => {
-    if (existing) {
-      dispatch(updateAssignment(assignment));
-    } else {
-      dispatch(addAssignment(assignment));
-    }
-    router.push(`/Courses/${cid}/Assignments`);
+  const handleSave = async () => {
+    // ensure points is a number
+    assignment.points = Number(assignment.points) || 0;
+
+    try {
+      if (existing) {
+        // update on server
+        const updated = await client.updateAssignment(assignment);
+        // update redux state from server response
+        dispatch(updateAssignmentAction(updated));
+      } else {
+        // create on server under course
+        const created = await client.createAssignmentForCourse(
+          cid as string,
+          assignment
+        );
+        dispatch(addAssignmentAction(created));
+      }
+      router.push(`/Courses/${cid}/Assignments`);
+    } catch (err) {}
   };
 
   const handleCancel = () => {
@@ -90,7 +107,10 @@ export default function AssignmentEditor() {
               type="number"
               value={assignment.points}
               onChange={(e) =>
-                setAssignment({ ...assignment, points: e.target.value })
+                setAssignment({
+                  ...assignment,
+                  points: Number((e.target as HTMLInputElement).value),
+                })
               }
             />
           </Col>

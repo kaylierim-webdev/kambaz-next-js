@@ -1,6 +1,6 @@
 "use client";
+import { enrollments } from "@/app/(Kambaz)/Database";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { enrollments } from "../../../Database";
 
 interface Enrollment {
   _id: string;
@@ -11,11 +11,14 @@ interface Enrollment {
 const initialState = {
   enrollments: enrollments,
 };
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const enrollmentsSlice = createSlice({
   name: "enrollments",
   initialState,
   reducers: {
+    setEnrollments: (state, action) => {
+      state.enrollments = action.payload;
+    },
     enrollCourse: (state, action: PayloadAction<Enrollment>) => {
       state.enrollments.push(action.payload);
     },
@@ -24,7 +27,7 @@ const enrollmentsSlice = createSlice({
       action: PayloadAction<{ user: string; course: string }>
     ) => {
       state.enrollments = state.enrollments.filter(
-        (e) =>
+        (e: any) =>
           !(
             e.user === action.payload.user && e.course === action.payload.course
           )
@@ -33,5 +36,6 @@ const enrollmentsSlice = createSlice({
   },
 });
 
-export const { enrollCourse, unenrollCourse } = enrollmentsSlice.actions;
+export const { setEnrollments, enrollCourse, unenrollCourse } =
+  enrollmentsSlice.actions;
 export default enrollmentsSlice.reducer;

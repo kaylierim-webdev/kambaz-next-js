@@ -16,7 +16,12 @@ import LessonControlButtons from "../Modules/LessonControlButtons";
 import { LuNotebookPen } from "react-icons/lu";
 import { useParams, useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteAssignment } from "./reducer";
+import {
+  setAssignments,
+  deleteAssignment as deleteAssignmentAction,
+} from "./reducer";
+import * as client from "../../client";
+import { useEffect } from "react";
 
 export default function Assignments() {
   const { cid } = useParams();
@@ -24,15 +29,31 @@ export default function Assignments() {
   const router = useRouter();
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const { assignments } = useSelector((state: any) => state.assignmentsReducer);
-  const courseAssignments = assignments.filter((a: any) => a.course === cid);
+
+  const courseAssignments = assignments || [];
+
+  useEffect(() => {
+    if (!cid) return;
+    const fetchAssignments = async () => {
+      try {
+        const modules = await client.findAssignmentsForCourse(cid as string);
+        dispatch(setAssignments(modules));
+      } catch (err) {}
+    };
+    fetchAssignments();
+  }, [cid, dispatch]);
 
   const handleAddAssignment = () => {
     router.push(`/Courses/${cid}/Assignments/new`);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
+    if (!id) return;
     if (window.confirm("Are you sure you want to delete this assignment?")) {
-      dispatch(deleteAssignment(id));
+      try {
+        await client.deleteAssignment(id);
+        dispatch(deleteAssignmentAction(id));
+      } catch (err) {}
     }
   };
 
@@ -88,11 +109,11 @@ export default function Assignments() {
                       href={`/Courses/${cid}/Assignments/${assignment._id}`}
                       className="wd-assignment-link text-black fw-bold"
                     >
-                      {assignment.title}
+                      {assignment.title || "(Untitled)"}
                     </Link>
                     <span className="text-muted small">
-                      Due: {assignment.dueDate || "N/A"} | {assignment.points}{" "}
-                      pts
+                      Due: {assignment.dueDate || "N/A"} |{" "}
+                      {assignment.points ?? "N/A"} pts
                     </span>
                   </div>
                 </div>
