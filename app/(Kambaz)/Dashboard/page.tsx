@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCourses } from "../Courses/reducer";
 import {
   enrollCourse,
+  setEnrollments,
   unenrollCourse,
 } from "../Courses/[cid]/Enrollments/reducer";
 import { v4 as uuidv4 } from "uuid";
@@ -80,7 +81,14 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    fetchCourses();
+    if (!currentUser) return;
+
+    const load = async () => {
+      const data = await client.findEnrollmentsForUser(currentUser._id);
+      dispatch(setEnrollments(data));
+    };
+
+    load();
   }, [currentUser]);
 
   if (!currentUser) {
@@ -106,24 +114,24 @@ export default function Dashboard() {
           enrolledCourseIds.includes(c._id)
       );
 
-  const handleEnroll = (courseId: string) => {
-    dispatch(
-      enrollCourse({ _id: uuidv4(), user: currentUser._id, course: courseId })
-    );
+  const handleEnroll = async (courseId: string) => {
+    try {
+      const enrollment = await client.enrollIntoCourse(
+        currentUser._id,
+        courseId
+      );
+      dispatch(enrollCourse(enrollment)); // enrollment returned from DB
+    } catch (err) {
+      console.error("Enroll failed:", err);
+    }
   };
 
   const handleUnenroll = async (courseId: string) => {
     try {
-      const enrollment = enrollments.find(
-        (e: any) => e.user === currentUser._id && e.course === courseId
-      );
-      if (!enrollment) return;
-
-      await client.unenroll(enrollment._id);
-
+      await client.unenrollFromCourse(currentUser._id, courseId);
       dispatch(unenrollCourse({ user: currentUser._id, course: courseId }));
     } catch (err) {
-      console.error("Unenroll failed", err);
+      console.error("Unenroll failed:", err);
     }
   };
 
