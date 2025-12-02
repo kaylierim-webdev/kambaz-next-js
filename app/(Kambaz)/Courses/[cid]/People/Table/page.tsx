@@ -3,7 +3,7 @@ import { Table } from "react-bootstrap";
 import { FaUserCircle } from "react-icons/fa";
 import PeopleDetails from "./Details";
 import { useState } from "react";
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export default function PeopleTable({
   users = [],
   fetchUsers,

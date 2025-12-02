@@ -6,6 +6,7 @@ import * as client from "../client";
 import { FormControl } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa6";
 export default function Users() {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [users, setUsers] = useState<any[]>([]);
   const [role, setRole] = useState("");
   const [name, setName] = useState("");
@@ -53,7 +54,10 @@ export default function Users() {
   return (
     <div>
       <h3>Users</h3>
-      <button onClick={createUser} className="float-end btn btn-danger wd-add-people">
+      <button
+        onClick={createUser}
+        className="float-end btn btn-danger wd-add-people"
+      >
         <FaPlus className="me-2" />
         Users
       </button>

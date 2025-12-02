@@ -14,8 +14,9 @@ export default function PeopleDetails({
   uid: string | null;
   onClose: () => void;
 }) {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [user, setUser] = useState<any>({});
-    const [name, setName] = useState("");
+  const [name, setName] = useState("");
   const [editing, setEditing] = useState(false);
   const saveUser = async () => {
     const [firstName, lastName] = name.split(" ");
@@ -54,22 +55,35 @@ export default function PeopleDetails({
       </div>
       <hr />
       <div className="text-danger fs-4 wd-name">
-         {!editing && (
-          <FaPencil onClick={() => setEditing(true)}
-              className="float-end fs-5 mt-2 wd-edit" /> )}
-        {editing && (
-          <FaCheck onClick={() => saveUser()}
-              className="float-end fs-5 mt-2 me-2 wd-save" /> )}
         {!editing && (
-          <div className="wd-name"
-               onClick={() => setEditing(true)}>
-            {user.firstName} {user.lastName}</div>)}
+          <FaPencil
+            onClick={() => setEditing(true)}
+            className="float-end fs-5 mt-2 wd-edit"
+          />
+        )}
+        {editing && (
+          <FaCheck
+            onClick={() => saveUser()}
+            className="float-end fs-5 mt-2 me-2 wd-save"
+          />
+        )}
+        {!editing && (
+          <div className="wd-name" onClick={() => setEditing(true)}>
+            {user.firstName} {user.lastName}
+          </div>
+        )}
         {user && editing && (
-          <FormControl className="w-50 wd-edit-name"
+          <FormControl
+            className="w-50 wd-edit-name"
             defaultValue={`${user.firstName} ${user.lastName}`}
             onChange={(e) => setName(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter") { saveUser(); }}}/>)}
+              if (e.key === "Enter") {
+                saveUser();
+              }
+            }}
+          />
+        )}
       </div>
       <b>Roles:</b> <span className="wd-roles"> {user.role} </span> <br />
       <b>Login ID:</b> <span className="wd-login-id"> {user.loginId} </span>{" "}
