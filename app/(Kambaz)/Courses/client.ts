@@ -6,6 +6,7 @@ const COURSES_API = `${HTTP_SERVER}/api/courses`;
 const USERS_API = `${HTTP_SERVER}/api/users`;
 const ASSIGNMENTS_API = `${HTTP_SERVER}/api/assignments`;
 const ENROLLMENTS_API = `${HTTP_SERVER}/api/enrollments`;
+const QUIZZES_API = `${HTTP_SERVER}/api/quizzes`;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 export const fetchAllCourses = async () => {
@@ -125,4 +126,24 @@ export const unenrollFromCourse = async (userId: string, courseId: string) => {
     `${USERS_API}/${userId}/courses/${courseId}`
   );
   return response.data;
+};
+
+export const findQuizzesForCourse = async (courseId: string) => {
+  const { data } = await axios.get(`${COURSES_API}/${courseId}/quizzes`);
+  return data;
+};
+
+export const createQuizForCourse = async (courseId: string, quiz: any) => {
+  const { data } = await axios.post(`${COURSES_API}/${courseId}/quizzes`, quiz);
+  return data;
+};
+
+export const updateQuiz = async (quiz: any) => {
+  const { data } = await axios.put(`${QUIZZES_API}/${quiz._id}`, quiz);
+  return data;
+};
+
+export const deleteQuiz = async (quizId: string) => {
+  const { data } = await axios.delete(`${QUIZZES_API}/${quizId}`);
+  return data;
 };

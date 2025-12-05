@@ -1,0 +1,106 @@
+[
+  {
+    "_id": "quiz-001",
+    "course": "RS102",
+    "title": "Introduction to Web Development",
+    "description": "A short quiz covering the basics of HTML, CSS, and JS.",
+    "points": 20,
+    "published": false,
+    "availableDate": "2025-12-01T08:00:00Z",
+    "untilDate": "2025-12-10T23:59:59Z",
+    "dueDate": "2025-12-10T23:59:59Z",
+    "quizType": "Graded Quiz",
+    "assignmentGroup": "Quizzes",
+    "shuffleAnswers": true,
+    "timeLimit": 20,
+    "multipleAttempts": false,
+    "showCorrectAnswers": false,
+    "accessCode": "",
+    "oneQuestionAtATime": true,
+    "webcamRequired": false,
+    "lockQuestionsAfterAnswering": false,
+    "questions": [
+      {
+        "_id": "q1",
+        "type": "Multiple Choice",
+        "title": "HTML Basics",
+        "question": "Which tag is used to create a hyperlink?",
+        "points": 5,
+        "choices": [
+          { "text": "<a>", "isCorrect": true },
+          { "text": "<link>", "isCorrect": false },
+          { "text": "<href>", "isCorrect": false },
+          { "text": "<p>", "isCorrect": false }
+        ]
+      },
+      {
+        "_id": "q2",
+        "type": "True/False",
+        "title": "CSS Syntax",
+        "question": "CSS stands for Cascading Style Sheets.",
+        "points": 5,
+        "answer": true
+      },
+      {
+        "_id": "q3",
+        "type": "Fill in the Blank",
+        "title": "JavaScript Variables",
+        "question": "A variable in JS can be declared using ___ or let or const.",
+        "points": 10,
+        "blanks": ["var"]
+      }
+    ]
+  },
+  {
+    "_id": "quiz-002",
+    "course": "RS102",
+    "title": "Advanced JS Concepts",
+    "description": "Test your knowledge on ES6 features.",
+    "points": 15,
+    "published": true,
+    "availableDate": "2025-12-05T08:00:00Z",
+    "untilDate": "2025-12-15T23:59:59Z",
+    "dueDate": "2025-12-15T23:59:59Z",
+    "quizType": "Graded Quiz",
+    "assignmentGroup": "Quizzes",
+    "shuffleAnswers": true,
+    "timeLimit": 30,
+    "multipleAttempts": true,
+    "showCorrectAnswers": false,
+    "accessCode": "",
+    "oneQuestionAtATime": false,
+    "webcamRequired": false,
+    "lockQuestionsAfterAnswering": false,
+    "questions": [
+      {
+        "_id": "q1",
+        "type": "Multiple Choice",
+        "title": "Arrow Functions",
+        "question": "Which of the following is a correct arrow function?",
+        "points": 5,
+        "choices": [
+          { "text": "() => {}", "isCorrect": true },
+          { "text": "function => {}", "isCorrect": false },
+          { "text": "function() {}", "isCorrect": false },
+          { "text": "() function {}", "isCorrect": false }
+        ]
+      },
+      {
+        "_id": "q2",
+        "type": "True/False",
+        "title": "Let vs Var",
+        "question": "Variables declared with let are block scoped.",
+        "points": 5,
+        "answer": true
+      },
+      {
+        "_id": "q3",
+        "type": "Fill in the Blank",
+        "title": "Template Literals",
+        "question": "You can use backticks (`) to create ___ literals in JS.",
+        "points": 5,
+        "blanks": ["template string", "template literal"]
+      }
+    ]
+  }
+]
