@@ -147,3 +147,29 @@ export const deleteQuiz = async (quizId: string) => {
   const { data } = await axios.delete(`${QUIZZES_API}/${quizId}`);
   return data;
 };
+
+export const submitQuizAttempt = async (
+  quizId: string,
+  userId: string,
+  answers: any[]
+) => {
+  const { data } = await axios.post(
+    `${HTTP_SERVER}/api/quizzes/${quizId}/attempts`,
+    { userId, answers }
+  );
+  return data;
+};
+
+export const getQuizAttempts = async (quizId: string, userId: string) => {
+  const { data } = await axios.get(
+    `${HTTP_SERVER}/api/quizzes/${quizId}/attempts/user/${userId}`
+  );
+  return data;
+};
+
+export const getLatestAttempt = async (quizId: string, userId: string) => {
+  const { data } = await axios.get(
+    `${HTTP_SERVER}/api/quizzes/${quizId}/attempts/user/${userId}/latest`
+  );
+  return data;
+};
