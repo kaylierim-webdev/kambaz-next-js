@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -44,7 +46,7 @@ export default function TakeQuiz() {
       <div className="p-3">
         <Alert variant="warning">
           <h4>Max Attempts Reached</h4>
-          <p>You've used all {quiz.howManyAttempts} attempts</p>
+          <p className="text-danger">You have already submitted this quiz. Your attempt won&apos;t be saved if you submit again.</p>
           <Button onClick={() => router.back()}>Back</Button>
         </Alert>
       </div>

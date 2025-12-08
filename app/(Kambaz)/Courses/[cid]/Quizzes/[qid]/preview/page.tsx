@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
@@ -22,7 +24,7 @@ export default function QuizPreview() {
   return (
     <div>
       <Alert variant="info" className="m-3">
-        <strong>Preview Mode</strong> - Your answers won't be saved
+       <strong>Preview Mode</strong> - Your answers won&apos;t be saved
       </Alert>
       <QuizTakingInterface quiz={quiz} isPreview={true} />
     </div>

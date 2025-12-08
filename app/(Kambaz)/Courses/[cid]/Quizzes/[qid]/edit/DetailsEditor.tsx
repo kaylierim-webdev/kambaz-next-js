@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Form, Row, Col } from "react-bootstrap";
 
 export default function DetailsEditor({ quiz, setQuiz }: any) {

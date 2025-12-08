@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import { useState } from "react";
@@ -49,7 +51,7 @@ export default function QuestionEditor({ question, onSave, onCancel }: any) {
   };
 
   const changeType = (type: string) => {
-    let updates: any = { type };
+    const updates: Partial<Question> = { type };
     if (type === "multiple_choice") {
       updates.choices = [
         { _id: `c1-${Date.now()}`, text: "", correct: true },
