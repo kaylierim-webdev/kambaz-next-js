@@ -1,39 +1,63 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 "use client";
 
 import { useState } from "react";
 import { Form, Button, Row, Col, InputGroup } from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
+import React from "react";
 
-export default function QuestionEditor({ question, onSave, onCancel }: any) {
-  const [q, setQ] = useState({ ...question });
+interface Choice {
+  _id: string;
+  text: string;
+  correct: boolean;
+}
 
-  const update = (field: string, val: any) => setQ({ ...q, [field]: val });
+type QuestionType = "multiple_choice" | "true_false" | "fill_blank";
+
+interface Question {
+  _id: string;
+  title: string;
+  points: number;
+  type: QuestionType;
+  question: string;
+  choices?: Choice[];
+  answerIsTrue?: boolean;
+  answers?: string[];
+}
+
+interface QuestionEditorProps {
+  question: Question;
+  onSave: (q: Question) => void;
+  onCancel: () => void;
+}
+
+export default function QuestionEditor({ question, onSave, onCancel }: QuestionEditorProps) {
+  const [q, setQ] = useState<Question>({ ...question });
+
+  const update = (field: keyof Question | string, val: string | number | boolean) => setQ({ ...q, [field]: val });
 
   const addChoice = () => {
     setQ({
       ...q,
-      choices: [...q.choices, { _id: `c-${Date.now()}`, text: "", correct: false }],
+      choices: [...(q.choices as Choice[]), { _id: `c-${Date.now()}`, text: "", correct: false }],
     });
   };
 
-  const updateChoice = (idx: number, field: string, val: any) => {
-    const choices = [...q.choices];
+  const updateChoice = (idx: number, field: keyof Choice, val: string | boolean) => {
+    const choices = [...(q.choices as Choice[])];
     if (field === "correct" && val) {
       choices.forEach((c, i) => (c.correct = i === idx));
     } else {
-      choices[idx][field] = val;
+      (choices[idx] as any)[field] = val;
     }
     setQ({ ...q, choices });
   };
 
   const deleteChoice = (idx: number) => {
-    if (q.choices.length <= 2) {
+    if (q.choices && q.choices.length <= 2) {
       alert("Need at least 2 choices");
       return;
     }
-    setQ({ ...q, choices: q.choices.filter((_: any, i: number) => i !== idx) });
+    setQ({ ...q, choices: q.choices?.filter((_: Choice, i: number) => i !== idx) });
   };
 
   const addAnswer = () => {
@@ -41,16 +65,16 @@ export default function QuestionEditor({ question, onSave, onCancel }: any) {
   };
 
   const updateAnswer = (idx: number, val: string) => {
-    const ans = [...q.answers];
+    const ans = [...(q.answers as string[])];
     ans[idx] = val;
     setQ({ ...q, answers: ans });
   };
 
   const deleteAnswer = (idx: number) => {
-    setQ({ ...q, answers: q.answers.filter((_: any, i: number) => i !== idx) });
+    setQ({ ...q, answers: q.answers?.filter((_a: string, i: number) => i !== idx) });
   };
 
-  const changeType = (type: string) => {
+  const changeType = (type: QuestionType) => {
     const updates: Partial<Question> = { type };
     if (type === "multiple_choice") {
       updates.choices = [
@@ -100,7 +124,7 @@ export default function QuestionEditor({ question, onSave, onCancel }: any) {
 
         <Form.Group className="mb-3">
           <Form.Label>Type</Form.Label>
-          <Form.Select value={q.type} onChange={(e) => changeType(e.target.value)}>
+          <Form.Select value={q.type} onChange={(e) => changeType(e.target.value as QuestionType)}>
             <option value="multiple_choice">Multiple Choice</option>
             <option value="true_false">True/False</option>
             <option value="fill_blank">Fill in Blank</option>
@@ -120,7 +144,7 @@ export default function QuestionEditor({ question, onSave, onCancel }: any) {
         {q.type === "multiple_choice" && (
           <div className="mb-3">
             <Form.Label>Choices</Form.Label>
-            {q.choices?.map((c: any, i: number) => (
+            {q.choices?.map((c: Choice, i: number) => (
               <InputGroup key={c._id} className="mb-2">
                 <InputGroup.Radio
                   checked={c.correct}
@@ -131,7 +155,7 @@ export default function QuestionEditor({ question, onSave, onCancel }: any) {
                   onChange={(e) => updateChoice(i, "text", e.target.value)}
                   placeholder={`Choice ${i + 1}`}
                 />
-                <Button variant="outline-danger" onClick={() => deleteChoice(i)} disabled={q.choices.length <= 2}>
+                <Button variant="outline-danger" onClick={() => deleteChoice(i)} disabled={q.choices && q.choices.length <= 2}>
                   <FaTrash />
                 </Button>
               </InputGroup>
