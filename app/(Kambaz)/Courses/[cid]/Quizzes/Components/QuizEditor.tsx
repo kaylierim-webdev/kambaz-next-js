@@ -7,9 +7,9 @@ import { useParams, useRouter } from "next/navigation";
 import { Tabs, Tab, Button, Container, Alert } from "react-bootstrap";
 import DetailsEditor from "./DetailsEditor";
 import QuestionsEditor from "./QuestionsEditor";
-import * as client from "../../client";
+import * as client from "../../../client";
 import { useDispatch } from "react-redux";
-import { addQuiz, updateQuiz as updateQuizAction } from "../../quizzesReducer";
+import { addQuiz, updateQuiz as updateQuizAction } from "../quizzesReducer";
 
 export default function QuizEditor() {
   const { cid, qid } = useParams();
@@ -45,7 +45,9 @@ export default function QuizEditor() {
           questions: [],
           availableDate: new Date().toISOString(),
           dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-          untilDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+          untilDate: new Date(
+            Date.now() + 7 * 24 * 60 * 60 * 1000
+          ).toISOString(),
         });
         setLoading(false);
       } else {
@@ -80,7 +82,10 @@ export default function QuizEditor() {
       };
 
       if (qid === "new") {
-        const created = await client.createQuizForCourse(cid as string, quizToSave);
+        const created = await client.createQuizForCourse(
+          cid as string,
+          quizToSave
+        );
         dispatch(addQuiz(created));
         router.push(`/Courses/${cid}/Quizzes/${created._id}`);
       } else {
@@ -103,7 +108,10 @@ export default function QuizEditor() {
       };
 
       if (qid === "new") {
-        const created = await client.createQuizForCourse(cid as string, quizToSave);
+        const created = await client.createQuizForCourse(
+          cid as string,
+          quizToSave
+        );
         dispatch(addQuiz(created));
         router.push(`/Courses/${cid}/Quizzes`);
       } else {
@@ -121,9 +129,24 @@ export default function QuizEditor() {
     router.push(`/Courses/${cid}/Quizzes`);
   };
 
-  if (loading) return <Container className="mt-4"><p>Loading...</p></Container>;
-  if (error) return <Container className="mt-4"><Alert variant="danger">{error}</Alert></Container>;
-  if (!quiz) return <Container className="mt-4"><Alert variant="danger">Quiz not found</Alert></Container>;
+  if (loading)
+    return (
+      <Container className="mt-4">
+        <p>Loading...</p>
+      </Container>
+    );
+  if (error)
+    return (
+      <Container className="mt-4">
+        <Alert variant="danger">{error}</Alert>
+      </Container>
+    );
+  if (!quiz)
+    return (
+      <Container className="mt-4">
+        <Alert variant="danger">Quiz not found</Alert>
+      </Container>
+    );
 
   const totalPoints = calculateTotalPoints(quiz.questions || []);
 

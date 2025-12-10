@@ -4,7 +4,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { Alert } from "react-bootstrap";
-import QuizTakingInterface from "../QuizTakingInterface";
+import QuizTaking from "../../Components/QuizTaking";
 import * as client from "../../../../client";
 
 export default function QuizPreview() {
@@ -24,9 +24,9 @@ export default function QuizPreview() {
   return (
     <div>
       <Alert variant="info" className="m-3">
-       <strong>Preview Mode</strong> - Your answers won&apos;t be saved
+        <strong>Preview Mode</strong> - Your answers won&apos;t be saved
       </Alert>
-      <QuizTakingInterface quiz={quiz} isPreview={true} />
+      <QuizTaking quiz={quiz} isPreview={true} />
     </div>
   );
 }

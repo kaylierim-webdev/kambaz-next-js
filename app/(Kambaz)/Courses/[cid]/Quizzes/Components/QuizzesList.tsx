@@ -21,8 +21,12 @@ import {
   FaPlus,
   FaRocket,
 } from "react-icons/fa";
-import * as client from "./client";
-import { setQuizzes, deleteQuiz as deleteQuizAction, publishQuiz as publishQuizAction } from "./quizzesReducer";
+import * as client from "../../../client";
+import {
+  setQuizzes,
+  deleteQuiz as deleteQuizAction,
+  publishQuiz as publishQuizAction,
+} from "../quizzesReducer";
 
 export default function QuizzesList() {
   const { cid } = useParams();
@@ -80,7 +84,9 @@ export default function QuizzesList() {
     try {
       const newPublishedState = !quiz.published;
       await client.publishQuiz(quiz._id, newPublishedState);
-      dispatch(publishQuizAction({ quizId: quiz._id, published: newPublishedState }));
+      dispatch(
+        publishQuizAction({ quizId: quiz._id, published: newPublishedState })
+      );
     } catch (err) {
       console.error("Error toggling publish status:", err);
       alert("Failed to update publish status");
@@ -202,7 +208,8 @@ export default function QuizzesList() {
                         <strong>Points:</strong> {quiz.points}
                       </span>
                       <span className="me-3">
-                        <strong>Questions:</strong> {quiz.questions?.length || 0}
+                        <strong>Questions:</strong>{" "}
+                        {quiz.questions?.length || 0}
                       </span>
                       {!isFaculty && score !== null && (
                         <span>
@@ -231,7 +238,9 @@ export default function QuizzesList() {
                       <Dropdown.Item onClick={(e) => handleDelete(quiz._id, e)}>
                         Delete
                       </Dropdown.Item>
-                      <Dropdown.Item onClick={(e) => handlePublishToggle(quiz, e)}>
+                      <Dropdown.Item
+                        onClick={(e) => handlePublishToggle(quiz, e)}
+                      >
                         {quiz.published ? "Unpublish" : "Publish"}
                       </Dropdown.Item>
                     </Dropdown.Menu>

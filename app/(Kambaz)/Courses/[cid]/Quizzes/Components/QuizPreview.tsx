@@ -5,7 +5,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Button, Card, Form, Container, Alert } from "react-bootstrap";
-import * as client from "../client";
+import * as client from "../../../client";
 import { FaEdit } from "react-icons/fa";
 
 export default function QuizPreview() {
@@ -91,8 +91,18 @@ export default function QuizPreview() {
     return false;
   };
 
-  if (loading) return <Container className="mt-4"><p>Loading...</p></Container>;
-  if (!quiz) return <Container className="mt-4"><Alert variant="danger">Quiz not found</Alert></Container>;
+  if (loading)
+    return (
+      <Container className="mt-4">
+        <p>Loading...</p>
+      </Container>
+    );
+  if (!quiz)
+    return (
+      <Container className="mt-4">
+        <Alert variant="danger">Quiz not found</Alert>
+      </Container>
+    );
 
   return (
     <Container className="mt-4">

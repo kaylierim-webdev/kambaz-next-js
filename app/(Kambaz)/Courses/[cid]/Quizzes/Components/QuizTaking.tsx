@@ -4,8 +4,15 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Button, Alert, Card, Form, Container, ProgressBar } from "react-bootstrap";
-import * as client from "../client";
+import {
+  Button,
+  Alert,
+  Card,
+  Form,
+  Container,
+  ProgressBar,
+} from "react-bootstrap";
+import * as client from "../../../client";
 import { useSelector } from "react-redux";
 
 export default function QuizTaking() {
@@ -31,9 +38,12 @@ export default function QuizTaking() {
         setQuiz(q);
 
         if (currentUser?._id) {
-          const atts = await client.getQuizAttempts(qid as string, currentUser._id);
+          const atts = await client.getQuizAttempts(
+            qid as string,
+            currentUser._id
+          );
           setAttempts(atts);
-          
+
           if (q.multipleAttempts && atts.length >= (q.howManyAttempts || 1)) {
             setCanTake(false);
           }
@@ -101,7 +111,11 @@ export default function QuizTaking() {
           answer: answers[q._id] || null,
         }));
 
-        await client.submitQuizAttempt(qid as string, currentUser._id, formattedAnswers);
+        await client.submitQuizAttempt(
+          qid as string,
+          currentUser._id,
+          formattedAnswers
+        );
         router.push(`/Courses/${cid}/Quizzes/${qid}/results`);
       } catch (err) {
         console.error(err);
@@ -128,8 +142,18 @@ export default function QuizTaking() {
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
-  if (loading) return <Container className="mt-4"><p>Loading...</p></Container>;
-  if (!quiz) return <Container className="mt-4"><Alert variant="danger">Quiz not found</Alert></Container>;
+  if (loading)
+    return (
+      <Container className="mt-4">
+        <p>Loading...</p>
+      </Container>
+    );
+  if (!quiz)
+    return (
+      <Container className="mt-4">
+        <Alert variant="danger">Quiz not found</Alert>
+      </Container>
+    );
 
   if (!canTake) {
     return (
@@ -226,7 +250,9 @@ export default function QuizTaking() {
               <Form.Control
                 type="text"
                 value={currentAnswer || ""}
-                onChange={(e) => handleAnswerChange(question._id, e.target.value)}
+                onChange={(e) =>
+                  handleAnswerChange(question._id, e.target.value)
+                }
                 placeholder="Type your answer here"
               />
             </Form.Group>
@@ -244,7 +270,10 @@ export default function QuizTaking() {
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h2>{quiz.title}</h2>
         {timeRemaining !== null && (
-          <Alert variant={timeRemaining < 60 ? "danger" : "info"} className="mb-0 py-2">
+          <Alert
+            variant={timeRemaining < 60 ? "danger" : "info"}
+            className="mb-0 py-2"
+          >
             <strong>Time Remaining:</strong> {formatTime(timeRemaining)}
           </Alert>
         )}
@@ -264,7 +293,10 @@ export default function QuizTaking() {
 
       {quiz.oneQuestionAtATime ? (
         <>
-          {renderQuestion(quiz.questions[currentQuestionIndex], currentQuestionIndex)}
+          {renderQuestion(
+            quiz.questions[currentQuestionIndex],
+            currentQuestionIndex
+          )}
           <div className="d-flex justify-content-between mb-4">
             <Button
               variant="secondary"
