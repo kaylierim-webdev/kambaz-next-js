@@ -173,3 +173,17 @@ export const getLatestAttempt = async (quizId: string, userId: string) => {
   );
   return data;
 };
+
+export const publishQuiz = async (quizId: string, published: boolean) => {
+  const { data } = await axios.put(`${QUIZZES_API}/${quizId}/publish`, {
+    published,
+  });
+  return data;
+};
+
+export const getLatestQuizAttempt = async (quizId: string, userId: string) => {
+  const { data } = await axios.get(
+    `${HTTP_SERVER}/api/quizzes/${quizId}/attempts/user/${userId}/latest`
+  );
+  return data;
+};

@@ -5,7 +5,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Container, Card, Alert, Button, Badge } from "react-bootstrap";
-import * as client from "../client";
+import * as client from "../../../client";
 import { useSelector } from "react-redux";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 
@@ -26,9 +26,9 @@ export default function QuizResults() {
         setQuiz(q);
 
         if (currentUser?._id) {
-          const latestAttempt = await client.getLatestQuizAttempt(
-            qid as string,
-            currentUser._id
+          const latestAttempt = await client.getLatestAttempt(
+          qid as string,
+          currentUser._id
           );
           setAttempt(latestAttempt);
         }
