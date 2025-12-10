@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   quizzes: [],
 };
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 const quizzesSlice = createSlice({
   name: "quizzes",
   initialState,
