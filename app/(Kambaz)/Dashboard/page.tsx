@@ -124,9 +124,6 @@ export default function Dashboard() {
     }
   };
 
-  console.log(courses);
-  console.log(enrolledCourseIds);
-
   return (
     <div id="wd-dashboard">
       <div className="d-flex justify-content-between align-items-center">

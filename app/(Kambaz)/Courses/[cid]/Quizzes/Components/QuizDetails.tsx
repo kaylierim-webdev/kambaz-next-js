@@ -17,7 +17,7 @@ export default function QuizDetails() {
 
   const { currentUser } = useSelector((state: any) => state.accountReducer);
 
-  const isFaculty = currentUser?.role === "ADMIN";
+  const isFaculty = currentUser?.role === "FACULTY";
 
   useEffect(() => {
     const fetchData = async () => {
