@@ -37,7 +37,7 @@ export default function QuizzesList() {
 
   const [loading, setLoading] = useState(true);
 
-  const isFaculty = currentUser?.role === "FACULTY";
+  const isFaculty = currentUser?.role === "ADMIN";
 
   useEffect(() => {
     const fetchQuizzes = async () => {

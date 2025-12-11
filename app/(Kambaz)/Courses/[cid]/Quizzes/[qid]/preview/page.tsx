@@ -26,7 +26,7 @@ export default function QuizPreview() {
       <Alert variant="info" className="m-3">
         <strong>Preview Mode</strong> - Your answers won&apos;t be saved
       </Alert>
-      <QuizTaking quiz={quiz} isPreview={true} />
+      <QuizTaking />
     </div>
   );
 }
