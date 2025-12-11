@@ -26,9 +26,7 @@ export default function Dashboard() {
   const dispatch = useDispatch();
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   const { courses } = useSelector((state: any) => state.coursesReducer);
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
 
   const [showAllCourses, setShowAllCourses] = useState(false);
@@ -41,9 +39,9 @@ export default function Dashboard() {
     image: "/images/reactjs.jpg",
     description: "New Description",
   });
-  const fetchCourses = async () => {
+  const fetchAllCourses = async () => {
     try {
-      const courses = await client.findMyCourses();
+      const courses = await client.fetchAllCourses();
       dispatch(setCourses(courses));
     } catch (error) {
       console.error(error);
@@ -86,6 +84,7 @@ export default function Dashboard() {
     const load = async () => {
       const data = await client.findEnrollmentsForUser(currentUser._id);
       dispatch(setEnrollments(data));
+      fetchAllCourses();
     };
 
     load();
@@ -98,21 +97,11 @@ export default function Dashboard() {
   }
 
   const isFaculty = currentUser.role === "FACULTY";
-
-  const userEnrollments = enrollments.filter(
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    (e: any) => e.user === currentUser._id
-  );
-  const enrolledCourseIds = userEnrollments.map(
-    /* eslint-disable @typescript-eslint/no-explicit-any */ (e: any) => e.course
-  );
+  const enrolledCourseIds = enrollments.map((e: any) => e._id);
 
   const displayedCourses = showAllCourses
     ? courses
-    : courses.filter(
-        /* eslint-disable @typescript-eslint/no-explicit-any */ (c: any) =>
-          enrolledCourseIds.includes(c._id)
-      );
+    : courses.filter((c: any) => enrolledCourseIds.includes(c._id));
 
   const handleEnroll = async (courseId: string) => {
     try {
